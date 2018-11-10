@@ -1,0 +1,24 @@
+[
+  {
+    "key": "name",
+    "type": "input",
+    "templateOptions": {
+      "type": "text",
+      "label": "What's your name?",
+      "placeholder": "Your name"
+    },
+    "validation": {
+      "messages": {
+        "maxLength": "Your name is too long"
+      }
+    }
+  },
+  {
+    "key": "terms",
+    "type": "checkbox",
+    "templateOptions": {
+      "label": "Quiero recibir ofertas geniales",
+      "required": true
+    }
+  }
+]
