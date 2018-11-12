@@ -3,6 +3,7 @@ import { DataService } from './providers/data/data.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ViewChild } from '@angular/core';
 import { FormComponent } from './components/form/form.component';
+import { FirestoreService } from './providers/firebase/firestore.service';
 
 @Component({
   selector: 'app-root',
@@ -14,21 +15,26 @@ export class AppComponent implements OnInit {
   public userForm: FormlyFieldConfig[];
   @ViewChild('form') form: FormComponent;
 
-  constructor(private data: DataService) {
+  constructor(
+    private data: DataService,
+    private firestoreService: FirestoreService
+  ) {
 
   }
   ngOnInit() {
-    this.data.get('user-form').subscribe((form: FormlyFieldConfig[]) => {
-      this.form.fields = form;
-      this.form.model = {
-        name: '',
-        terms: false
-      };
+    this.form.model = {
+      name: '',
+      terms: false
+    };
 
-      // Form submitted ==>
-      this.form.submit.subscribe((submittedForm) => {
-        console.log('El formulario fue submitteado ==>', submittedForm);
-      });
+    this.firestoreService.get().get().subscribe(data => {
+      console.log(data.data());
+      if (data.exists) this.form.fields = data.data().fields;
+    });
+
+    // Form submitted ==>
+    this.form.submit.subscribe((submittedForm) => {
+      console.log('El formulario fue submitteado ==>', submittedForm);
     });
   }
 }
